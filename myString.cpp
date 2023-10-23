@@ -39,7 +39,7 @@ myString myString::operator+(myString str){
     return temp;
 }
 
-myString myString::operator+=(myString str){
+void myString::operator+=(myString str){
     int len2 = str.len;
     for(int i = 0; i < len2; i++){
         chars.push_back(str.chars.at(i));
@@ -48,7 +48,7 @@ myString myString::operator+=(myString str){
 }
 
 char myString::operator[](int i) {
-    if(!(i >= 0 || i < len)){
+    if((i >= 0 || i < len)){
     return chars.at(i); 
     } else {
         return '~';
@@ -86,6 +86,7 @@ bool myString::operator<(myString str){
             if(chars.at(i) > str[i]) return false;
         }
     }
+    return false;
 }
 
 bool myString::operator>(myString str){
@@ -103,6 +104,7 @@ bool myString::operator>(myString str){
             if(chars.at(i) < str[i]) return false;
         }
     }
+    return false;
 }
 
 bool myString::operator<=(myString str){
@@ -120,6 +122,7 @@ bool myString::operator<=(myString str){
             if(chars.at(i) > str[i]) return false;
         }
     }
+    return false;
 }
 
 bool myString::operator>=(myString str){
@@ -137,8 +140,36 @@ bool myString::operator>=(myString str){
             if(chars.at(i) < str[i]) return false;
         }
     }
+    return false;
 }
 
 myString myString::operator=(myString &str){
-    myString(*str);
+    return myString(str);
+}
+
+
+//std::ostream& myString::operator<<(std::ostream& os){
+//    for(int i = 0; i < len; i++){
+//        os << chars.at(i);
+//    }
+//    return os;
+//}
+
+
+int main(){
+    std::string test0 = "hello world";
+    std::string test2 = " please work";
+
+    myString test1 = myString(test0);
+    myString test3 = myString(test2);
+
+    
+
+    //  std::cout << test1 << std::endl;
+    std::cout << test1.toString() << std::endl;
+    std::cout << test1.length() << std::endl;
+    //  std::cout << test1.subString(7) <<std::endl;
+    //  std::cout << test1 + test3 << std::endl;
+    std::cout << (test1 < test3) << std::endl;
+    std::cout << test1[0] << std::endl;
 }

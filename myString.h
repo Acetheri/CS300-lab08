@@ -30,7 +30,7 @@ public:
     /**
      * Function returns an STD::STRING of the myString
     */
-private:
+
     std::string toString();
 
     /**
@@ -52,7 +52,7 @@ private:
     */
     myString operator+(myString str);
 
-    myString operator+=(myString str);
+    void operator+=(myString str);
 
     /**
      * Overloads the [i] selection operator to reference a char at index i
@@ -88,6 +88,11 @@ private:
             temp.len++;
         }
     }
+
+    /**
+     * redifinition of << operator for output streams
+    */
+    //std::ostream& operator<<(std::ostream& os);
 };
 
 #endif
