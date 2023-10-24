@@ -1,175 +1,179 @@
 #include "myString.h"
 
 
-std::string myString::toString(){
-    std::string temp = "";
-    for(int i = 0; i < len; i++){
-        temp += chars.at(i);
+
+
+
+
+const int myString::size(){
+    return length;
+}
+
+
+
+myString myString::substr(int start){
+    char temp[length] = "";
+    int j = 0;
+    for(int i = start; i < length; i++){
+        temp[j] = chars.at(i);
+        j++;
     }
-    return temp;
+    myString output = myString(temp);
+    return output;
 }
 
-int myString::length() {
-    return len;
-}
-
-
-myString myString::subString(int start){
-    std::string temp = "";
-    for(int i = start; i < len; i++){
-        temp+= chars.at(i);
+myString myString::substr(int start, int end){
+    char temp[end-start];
+    int j = 0;
+    for(int i = start-1; i < length; i++){
+        if(j < length-start) temp[j] = chars.at(i);
+        j++;
     }
-    return myString(temp);
-}
-myString myString::subString(int start, int end){
-    std::string temp = "";
-    for(int i = start; i < end; i++){
-        temp+= chars.at(i);
-    }
-    return myString(temp);
+    myString output = myString(temp);
+    return output;
 }
 
-myString myString::operator+(myString str){
-    myString temp = subString(0);
-    int len2 = str.len;
-    for(int i = 0; i < len2; i++){
-        temp.chars.push_back(str.chars.at(i));
-        temp.len++;
+ myString myString::operator+(myString& str){
+    int len1 = length;
+    int len2 = str.size();
+    char temp[len1 + len2];
+    int j =0;
+    for(int i = 0; i < len1; i++){
+        temp[j] = chars.at(i);
+        j++;
     }
-    return temp;
+    for(int k = 0; k < len2; k++){
+        temp[j] = str.chars.at(k);
+        j++;
+    }
+    myString output = myString(temp);
+    return output;
 }
 
-void myString::operator+=(myString str){
-    int len2 = str.len;
-    for(int i = 0; i < len2; i++){
+void myString::operator+=(myString& str){
+    for(int i =0; i < str.size(); i++){
         chars.push_back(str.chars.at(i));
-        len++;
     }
+    return;
 }
 
-char myString::operator[](int i) {
-    if((i >= 0 || i < len)){
-    return chars.at(i); 
-    } else {
-        return '~';
-    }
-    }
+const char myString::operator[](int index){
+    return chars.at(index);
+}
 
-bool myString::operator==(myString str) {
-    if(str.length() != this->length()) return false;
-    for(int i = 0; i < this->length(); i++){
-        if(this->chars.at(i) != str.chars.at(i)) return false;
+const bool myString::operator==(myString& str){
+    if(length != str.size()) return false;
+    for(int i = 0; i < length; i++){
+        if(chars.at(i) != str[i]) return false;
     }
     return true;
 }
 
-bool myString::operator!=(myString str){
-    if(str.length() != this->length()) return true;
-    for(int i = 0; i < this->length(); i++){
-        if(this->chars.at(i) != str.chars.at(i)) return true;
+const bool myString::operator!=(myString& str){
+    if(length != str.size()) return true;
+    for(int i = 0; i < length; i++){
+        if(chars.at(i) != str[i]) return true;
     }
     return false;
 }
 
-bool myString::operator<(myString str){
+const bool myString::operator<( myString& str){
+    int len1 = length;
+    int len2 = str.size();
     if(operator==(str) == true) return false;
-    if(len >= str.len){
-        for(int i = 0; i < len; i++){
-            if(str[i] == '~') return false;
-            if(chars.at(i) < str[i]) return true;
+    if(len1 > len2){
+        for(int i = 0; i < len2; i++){
             if(chars.at(i) > str[i]) return false;
         }
-    } else {
-        for(int i = 0; i < str.len; i++){
-            if(chars.at(i) == '~') return false;
-            if(chars.at(i) < str[i]) return true;
+        return false;
+    } else{
+        for(int i =0; i < len1; i++){
             if(chars.at(i) > str[i]) return false;
         }
+        return true;
     }
-    return false;
 }
-
-bool myString::operator>(myString str){
+const bool myString::operator<=( myString& str){
+    int len1 = length;
+    int len2 = str.size();
+    if(operator==(str) == true) return true;
+    if(len1 > len2){
+        for(int i = 0; i < len2; i++){
+            if(chars.at(i) > str[i]) return false;
+        }
+        return true;
+    } else{
+        for(int i =0; i < len1; i++){
+            if(chars.at(i) > str[i]) return false;
+        }
+        return false;
+    }
+}
+const bool myString::operator>( myString& str){
+    int len1 = length;
+    int len2 = str.size();
     if(operator==(str) == true) return false;
-    if(len >= str.len){
-        for(int i = 0; i < len; i++){
-            if(str[i] == '~') return false;
+    if(len1 > len2){
+        for(int i = 0; i < len2; i++){
             if(chars.at(i) > str[i]) return true;
-            if(chars.at(i) < str[i]) return false;
         }
-    } else {
-        for(int i = 0; i < str.len; i++){
-            if(chars.at(i) == '~') return false;
+        return false;
+    } else{
+        for(int i =0; i < len1; i++){
             if(chars.at(i) > str[i]) return true;
-            if(chars.at(i) < str[i]) return false;
         }
+        return true;
     }
-    return false;
 }
-
-bool myString::operator<=(myString str){
+const bool myString::operator>=( myString& str){
+    int len1 = length;
+    int len2 = str.size();
     if(operator==(str) == true) return true;
-    if(len >= str.len){
-        for(int i = 0; i < len; i++){
-            if(str[i] == '~') return false;
-            if(chars.at(i) < str[i]) return true;
-            if(chars.at(i) > str[i]) return false;
-        }
-    } else {
-        for(int i = 0; i < str.len; i++){
-            if(chars.at(i) == '~') return false;
-            if(chars.at(i) < str[i]) return true;
-            if(chars.at(i) > str[i]) return false;
-        }
-    }
-    return false;
-}
-
-bool myString::operator>=(myString str){
-    if(operator==(str) == true) return true;
-    if(len >= str.len){
-        for(int i = 0; i < len; i++){
-            if(str[i] == '~') return false;
+    if(len1 > len2){
+        for(int i = 0; i < len2; i++){
             if(chars.at(i) > str[i]) return true;
-            if(chars.at(i) < str[i]) return false;
         }
-    } else {
-        for(int i = 0; i < str.len; i++){
-            if(chars.at(i) == '~') return false;
+        return false;
+    } else{
+        for(int i =0; i < len1; i++){
             if(chars.at(i) > str[i]) return true;
-            if(chars.at(i) < str[i]) return false;
         }
+        return true;
     }
-    return false;
 }
-
-myString myString::operator=(myString &str){
-    return myString(str);
-}
-
-
-//std::ostream& myString::operator<<(std::ostream& os){
-//    for(int i = 0; i < len; i++){
-//        os << chars.at(i);
-//    }
-//    return os;
-//}
 
 
 int main(){
-    std::string test0 = "hello world";
-    std::string test2 = " please work";
 
-    myString test1 = myString(test0);
-    myString test3 = myString(test2);
+    char temp1[] = "hello";
+    char temp2[] = "world";
 
+    myString test1 = myString(temp1);
+    myString test2 = myString(temp2);
     
 
-    //  std::cout << test1 << std::endl;
-    std::cout << test1.toString() << std::endl;
-    std::cout << test1.length() << std::endl;
-    //  std::cout << test1.subString(7) <<std::endl;
-    //  std::cout << test1 + test3 << std::endl;
-    std::cout << (test1 < test3) << std::endl;
-    std::cout << test1[0] << std::endl;
+    std::cout << test1 << std::endl;
+
+
+    myString test3 = test1.substr(1);
+
+    std::cout << test3 << std::endl;
+
+    std::cout << (test1 < test2) << std::endl;
+
+    std::cout << (test1 > test2) << std::endl;
+
+    std::cout << (test3 == test2) << std::endl;
+
+    //test3 = (test1 + test2);
+
+    //std::cout <<  << std::endl;
+
+
+
+
+
+
+
+
 }
